@@ -29,7 +29,7 @@ unsafeCounter++
 Because the `++` operation is not atomic (it involves reading the current value, incrementing it, and then writing the new value back), other coroutines can read an outdated value, causing some increments to be "lost." The final count will be less than the expected `1000 * 100 = 100,000`.
 
 **The Solutions Explored**:
-This module provides two primary solutions, illustrating both low-level JVM primitives and high-level Coroutine constructs:
+This module compares low-level JVM primitives with high-level Coroutine constructs, categorizing them into **Shared Memory** and **Message Passing** patterns.
 
 **A) `AtomicInteger` (JVM Primitive - Lock-Free)**
 `AtomicInteger` is part of Java's `java.util.concurrent.atomic` package. It provides methods like `incrementAndGet()` that use **Compare-And-Swap (CAS)** CPU instructions. This makes the operation atomic and thread-safe without needing locks, making it highly performant.
