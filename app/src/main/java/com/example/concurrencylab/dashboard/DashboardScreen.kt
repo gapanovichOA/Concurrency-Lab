@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.PlayArrow
@@ -75,6 +76,14 @@ fun DashboardScreen(navController: NavController) {
                     description = "Modernizing Legacy APIs: Using callbackFlow to safely bridge listeners into reactive streams.",
                     icon = Icons.Default.Settings,
                     onClick = { navController.navigate(Screen.CallbackBridge.route) }
+                )
+            }
+            item {
+                MenuCard(
+                    title = "Parallel Strategies",
+                    description = "Sequential vs Async vs Zip vs Combine. Choosing the right concurrency pattern for performance.",
+                    icon = Icons.Default.Refresh,
+                    onClick = { navController.navigate(Screen.ParallelApi.route) }
                 )
             }
         }

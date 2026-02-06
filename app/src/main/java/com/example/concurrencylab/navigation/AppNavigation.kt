@@ -12,6 +12,8 @@ import com.example.concurrencylab.callbackbridge.CallbackBridgeViewModel
 import com.example.concurrencylab.cooperation.CooperationScreen
 import com.example.concurrencylab.cooperation.CooperationViewModel
 import com.example.concurrencylab.dashboard.DashboardScreen
+import com.example.concurrencylab.parallelapi.ParallelApiScreen
+import com.example.concurrencylab.parallelapi.ParallelApiViewModel
 import com.example.concurrencylab.racecondition.RaceConditionScreen
 import com.example.concurrencylab.racecondition.RaceConditionViewModel
 
@@ -22,7 +24,7 @@ fun AppNavigation() {
     val cooperationViewModel: CooperationViewModel = viewModel()
     val blockingTrapViewModel: BlockingTrapViewModel = viewModel()
     val callbackBridgeViewModel: CallbackBridgeViewModel = viewModel()
-
+    val parallelApiViewModel: ParallelApiViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
         composable(Screen.Dashboard.route) {
@@ -39,6 +41,9 @@ fun AppNavigation() {
         }
         composable(Screen.CallbackBridge.route) {
             CallbackBridgeScreen(callbackBridgeViewModel)
+        }
+        composable(Screen.ParallelApi.route) {
+            ParallelApiScreen(parallelApiViewModel)
         }
     }
 }

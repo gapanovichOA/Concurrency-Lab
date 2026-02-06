@@ -214,6 +214,63 @@ In this lab, we use `stateIn` with `SharingStarted.WhileSubscribed(5000)`.
 
 ---
 
+## 🏎️ Module 5: Parallel API Strategies
+
+This module serves as a deep-dive into the performance and architectural implications of different
+concurrency patterns in Kotlin. It demonstrates how to move away from sequential "blocking-style"
+code toward efficient, reactive, and incremental data loading.
+
+### The Mission
+
+To fetch three independent data sources (Bio, Posts, Friends) with varying network latencies and
+compare how different Coroutine strategies affect the **Total Loading Time** and the **User
+Experience (UX)**.
+
+### Comparison of Strategies
+
+| Strategy            | Speed              | UX Impact                                                         | Use Case                                                              |
+|:--------------------|:-------------------|:------------------------------------------------------------------|:----------------------------------------------------------------------|
+| **1. Sequential**   | ❌ **~4.5s**        | High friction; UI stays blank for the sum of all delays.          | Only use when Task B depends on the result of Task A.                 |
+| **2. Async/Await**  | ✅ **~2.0s**        | All-or-nothing; UI stays blank until the slowest task finishes.   | Best for one-shot operations where partial data is useless.           |
+| **3. Flow Zip**     | ✅ **~2.0s**        | Paired emission; only emits once all flows have provided a value. | Best for merging related streams (e.g., User + Settings).             |
+| **4. Flow Combine** | 🚀 **~2.0s**       | Reactive; updates the UI as soon as any flow emits a new value.   | Best for real-time dashboards with independent updates.               |
+| **5. ChannelFlow**  | 🌊 **Incremental** | Waterfall effect; data appears on screen as it arrives.           | **Peak UX:** Use when you want to show the user progress immediately. |
+
+### 🛠️ Key Technical Concepts
+
+#### 1. Structured Concurrency
+
+In the `async/await` and `channelFlow` examples, we use `viewModelScope`. This ensures that if the
+user navigates away before the 2-second "Friends" API call finishes, the job is cancelled
+automatically, preventing a wasted network request and potential memory leaks.
+
+#### 2. Incremental vs. Atomic Updates
+
+* **Atomic (Async/Zip):** The UI transitions from "Empty" to "Complete" in one jump. This is easier
+  to manage but feels slower to the user because there is no feedback during the wait.
+* **Incremental (ChannelFlow):** The UI fills up piece-by-piece. This improves **Perceived
+  Performance**, as the user sees activity within the first 1000ms.
+
+#### 3. The "Waterfall" with ChannelFlow
+
+Unlike a standard Flow, `channelFlow` allows us to launch multiple coroutines *inside* the flow
+builder. This creates a thread-safe communication channel where multiple producers can `send()` data
+to a single `collect` block concurrently.
+
+### 💡 Senior Interview Talking Points
+
+* **Question:** *"Why not just use Dispatchers.IO for everything?"*
+* **Answer:** *"Moving work to IO prevents UI freezes, but it doesn't solve the timing issue. If I
+  fetch 3 APIs sequentially on IO, it's still 4.5 seconds. Concurrency is about execution order and
+  overlap, not just thread selection."*
+
+* **Question:** *"When would you prefer Zip over Combine?"*
+* **Answer:** *"Zip is strictly for pairs. If I have a Flow of 'First Names' and a Flow of 'Last
+  Names', I use Zip because I only want to update the UI when I have a complete name. Combine is
+  better when data points are independent, like a Bio and a Friend Count."*
+
+---
+
 ## ⚙️ Getting Started
 1. **Clone** this repository to your local machine.
 2. Open in **Android Studio** (Latest Version).
