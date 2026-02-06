@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +51,14 @@ fun DashboardScreen(navController: NavController) {
                     description = "6 Ways How to Solve Race Conditions",
                     icon = Icons.Default.Warning,
                     onClick = { navController.navigate(Screen.RaceCondition.route) }
+                )
+            }
+            item {
+                MenuCard(
+                    title = Screen.Cooperation.title,
+                    description = "Thread Fairness: How coroutines share a single thread using yield() vs. blocking execution.",
+                    icon = Icons.Default.Build,
+                    onClick = { navController.navigate(Screen.Cooperation.route) }
                 )
             }
         }

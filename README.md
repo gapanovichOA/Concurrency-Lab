@@ -114,6 +114,36 @@ sharedFlow.emit(Unit)
 | **SharedFlow**       | ✅ Safe    | Reactive Broadcast                                | Handling events and state updates in a decoupled, stream-based way. |
 ---
 
+# 🟢 Module 2: The Fairness Lab (Cooperation & Yield)
+
+This module explores the mechanics of **Cooperative Multitasking**. In Kotlin, coroutines are not preemptive; the system cannot force a coroutine to stop to let another one run. Instead, coroutines must voluntarily "yield" control.
+
+### The Core Concept: What is `yield()`?
+
+According to the "Mastering Cooperation" principles, `yield()` is a suspending function that does two critical things:
+1. **Checks for Cancellation:** It immediately checks if the current `Job` has been cancelled. If it has, it throws a `CancellationException`.
+2. **Promotes Fairness:** It temporarily pauses the current coroutine and gives the Dispatcher a chance to execute other waiting coroutines on the same thread. If no other coroutines are waiting, the current one resumes immediately.
+
+### The Problem: Thread Starvation
+Without `yield()`, a coroutine performing a heavy CPU-bound loop (like image processing or complex calculations) will "hog" the thread.
+* **In Single-Threaded Contexts:** It will completely block other coroutines from starting.
+* **On the Main Thread:** It will stop the UI from drawing, leading to "Application Not Responding" (ANR) errors.
+
+### When is `yield()` Needed?
+
+| Scenario                      | Impact of `yield()`                                                                               |
+|:------------------------------|:--------------------------------------------------------------------------------------------------|
+| **Heavy CPU Loops**           | Prevents a single worker from blocking other tasks on the same Dispatcher.                        |
+| **Long-Running Computations** | Provides frequent "Safe Points" for the coroutine to check for cancellation and exit gracefully.  |
+| **UI Responsiveness**         | Ensures that background processing doesn't starve the Main thread's ability to handle user input. |
+
+### 🔬 Lab Experiment
+In this lab, we force two workers onto a **Single-Threaded Dispatcher**:
+* **Selfish Mode:** Worker 1 runs a loop without yielding. Worker 2 is "starved" and cannot start until Worker 1 is 100% finished.
+* **Cooperative Mode:** Both workers call `yield()` after every step. They "interleave," sharing the single thread fairly and completing their work side-by-side.
+
+---
+
 ## ⚙️ Getting Started
 1. **Clone** this repository to your local machine.
 2. Open in **Android Studio** (Latest Version).

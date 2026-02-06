@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.concurrencylab.cooperation.CooperationScreen
+import com.example.concurrencylab.cooperation.CooperationViewModel
 import com.example.concurrencylab.dashboard.DashboardScreen
 import com.example.concurrencylab.racecondition.RaceConditionScreen
 import com.example.concurrencylab.racecondition.RaceConditionViewModel
@@ -13,6 +15,8 @@ import com.example.concurrencylab.racecondition.RaceConditionViewModel
 fun AppNavigation() {
     val navController = rememberNavController()
     val raceViewModel: RaceConditionViewModel = viewModel()
+    val cooperationViewModel: CooperationViewModel = viewModel()
+
 
     NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
         composable(Screen.Dashboard.route) {
@@ -20,6 +24,9 @@ fun AppNavigation() {
         }
         composable(Screen.RaceCondition.route) {
             RaceConditionScreen(raceViewModel)
+        }
+        composable(Screen.Cooperation.route) {
+            CooperationScreen(cooperationViewModel)
         }
     }
 }
