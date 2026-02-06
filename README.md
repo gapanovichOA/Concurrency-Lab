@@ -177,6 +177,43 @@ for scalability.
 
 ---
 
+## 🌉 Module 4: The Callback-to-Flow Bridge
+
+This module demonstrates how to modernize legacy callback-based APIs (like GPS, Firebase Listeners,
+or SensorManager).
+
+### 🔍 Why use `callbackFlow`?
+
+Regular `flow { ... }` is strictly sequential and doesn't handle asynchronous data streams that live
+outside the flow block. `callbackFlow` creates a bridge by providing:
+
+1. **Thread-safe Communication:** Using a `Channel` to pass data from the callback to the collector.
+2. **Context Preservation:** Ensuring the data is collected in the right CoroutineContext.
+3. **Automatic Cleanup:** Using `awaitClose` to ensure listeners are removed when the UI is no
+   longer observing.
+
+### ⚠️ The Trap: Forgetting `awaitClose`
+
+If you forget `awaitClose`, the flow will complete immediately after registering the listener, or
+worse, it will keep the listener active forever, causing a **Memory Leak**.
+
+**Advanced Tip:** Always use `trySend()` instead of `send()` inside callbacks to ensure that a slow
+collector doesn't block the external API's thread.
+
+### 🔄 Lifecycle Awareness & Resource Management
+
+In this lab, we use `stateIn` with `SharingStarted.WhileSubscribed(5000)`.
+
+* **The Strategy:** This tells the Flow to keep the upstream producer (the callback listener) active
+  only as long as there are active subscribers in the UI.
+* **The Buffer:** The 5-second delay is a best practice for Android. It prevents the expensive
+  setup/teardown of listeners (like GPS or Sensors) during configuration changes (like screen
+  rotation).
+* **Automatic Teardown:** Once the user navigates away and the 5-second timer expires, `awaitClose`
+  is triggered, ensuring zero resource leakage.
+
+---
+
 ## ⚙️ Getting Started
 1. **Clone** this repository to your local machine.
 2. Open in **Android Studio** (Latest Version).

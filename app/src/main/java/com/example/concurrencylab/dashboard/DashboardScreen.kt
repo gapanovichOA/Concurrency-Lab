@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Card
@@ -66,6 +67,14 @@ fun DashboardScreen(navController: NavController) {
                     description = "Suspending vs. Blocking: Visualizing why Thread.sleep() freezes your UI while delay() keeps it fluid.",
                     icon = Icons.Outlined.PlayArrow,
                     onClick = { navController.navigate(Screen.BlockingTrap.route) }
+                )
+            }
+            item {
+                MenuCard(
+                    title = Screen.CallbackBridge.title,
+                    description = "Modernizing Legacy APIs: Using callbackFlow to safely bridge listeners into reactive streams.",
+                    icon = Icons.Default.Settings,
+                    onClick = { navController.navigate(Screen.CallbackBridge.route) }
                 )
             }
         }
