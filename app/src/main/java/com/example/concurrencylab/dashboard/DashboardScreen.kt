@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,6 +58,14 @@ fun DashboardScreen(navController: NavController) {
                     description = "Thread Fairness: How coroutines share a single thread using yield() vs. blocking execution.",
                     icon = Icons.Default.Build,
                     onClick = { navController.navigate(Screen.Cooperation.route) }
+                )
+            }
+            item {
+                MenuCard(
+                    title = Screen.BlockingTrap.title,
+                    description = "Suspending vs. Blocking: Visualizing why Thread.sleep() freezes your UI while delay() keeps it fluid.",
+                    icon = Icons.Outlined.PlayArrow,
+                    onClick = { navController.navigate(Screen.BlockingTrap.route) }
                 )
             }
         }

@@ -114,7 +114,7 @@ sharedFlow.emit(Unit)
 | **SharedFlow**       | ✅ Safe    | Reactive Broadcast                                | Handling events and state updates in a decoupled, stream-based way. |
 ---
 
-# 🟢 Module 2: The Fairness Lab (Cooperation & Yield)
+## 🟢 Module 2: The Fairness Lab (Cooperation & Yield)
 
 This module explores the mechanics of **Cooperative Multitasking**. In Kotlin, coroutines are not preemptive; the system cannot force a coroutine to stop to let another one run. Instead, coroutines must voluntarily "yield" control.
 
@@ -141,6 +141,39 @@ Without `yield()`, a coroutine performing a heavy CPU-bound loop (like image pro
 In this lab, we force two workers onto a **Single-Threaded Dispatcher**:
 * **Selfish Mode:** Worker 1 runs a loop without yielding. Worker 2 is "starved" and cannot start until Worker 1 is 100% finished.
 * **Cooperative Mode:** Both workers call `yield()` after every step. They "interleave," sharing the single thread fairly and completing their work side-by-side.
+
+---
+
+## 🛑 Module 3: The Blocking Trap (Suspending vs. Blocking)
+
+This module is a visual experiment designed to debunk the myth that "Coroutines always make code
+asynchronous." It highlights the critical difference between **Thread Blocking** and **Coroutine
+Suspension**.
+
+### 🧪 The Experiment
+
+We use a **Continuous Liveness Indicator** (a spinning loader).
+
+* When you trigger a **Blocking Task** (`Thread.sleep`), the loader freezes instantly.
+* When you trigger a **Suspending Task** (`delay`), the loader continues to spin smoothly.
+
+### 🔍 Technical Breakdown
+
+| Feature               | `Thread.sleep()` (Blocking)                                                        | `delay()` (Suspending)                                                                 |
+|:----------------------|:-----------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------|
+| **Thread State**      | **Occupied.** The thread is held captive and cannot perform any other work.        | **Released.** The coroutine is "parked," and the thread is free to handle other tasks. |
+| **Android UI Impact** | **Freezes the UI.** The Main Looper cannot process the next frame or touch events. | **Fluid UI.** The Main Looper remains free to draw animations and respond to the user. |
+| **Resource Cost**     | High. You are wasting a full OS thread.                                            | Low. It’s just an object in memory waiting for a timer to fire.                        |
+
+### 💡 The Insight: Context is King
+
+A common mistake is thinking that `Dispatchers.IO` solves everything. While moving blocking work to
+`Dispatchers.IO` prevents UI freezes, it still blocks a thread in the IO pool.
+
+**Developers aim for "Non-blocking I/O" whenever possible.** This means using libraries that support
+suspension (like Retrofit or Room) rather than wrapping blocking calls in
+`withContext(Dispatchers.IO)`. This lab proves why "Suspending" is the superior architectural choice
+for scalability.
 
 ---
 
