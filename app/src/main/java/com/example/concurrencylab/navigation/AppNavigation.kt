@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.concurrencylab.backpressure.BackpressureScreen
+import com.example.concurrencylab.backpressure.BackpressureViewModel
 import com.example.concurrencylab.blockingtrap.BlockingTrapScreen
 import com.example.concurrencylab.blockingtrap.BlockingTrapViewModel
 import com.example.concurrencylab.callbackbridge.CallbackBridgeScreen
@@ -25,6 +27,7 @@ fun AppNavigation() {
     val blockingTrapViewModel: BlockingTrapViewModel = viewModel()
     val callbackBridgeViewModel: CallbackBridgeViewModel = viewModel()
     val parallelApiViewModel: ParallelApiViewModel = viewModel()
+    val backpressureViewModel: BackpressureViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
         composable(Screen.Dashboard.route) {
@@ -44,6 +47,9 @@ fun AppNavigation() {
         }
         composable(Screen.ParallelApi.route) {
             ParallelApiScreen(parallelApiViewModel)
+        }
+        composable(Screen.Backpressure.route) {
+            BackpressureScreen(backpressureViewModel)
         }
     }
 }

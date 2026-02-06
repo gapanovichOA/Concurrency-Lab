@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
@@ -84,6 +85,14 @@ fun DashboardScreen(navController: NavController) {
                     description = "Sequential vs Async vs Zip vs Combine. Choosing the right concurrency pattern for performance.",
                     icon = Icons.Default.Refresh,
                     onClick = { navController.navigate(Screen.ParallelApi.route) }
+                )
+            }
+            item {
+                MenuCard(
+                    title = "Backpressure Lab",
+                    description = "Handling floods of data: Comparing Buffer, Conflate, and CollectLatest.",
+                    icon = Icons.Default.Home,
+                    onClick = { navController.navigate(Screen.Backpressure.route) }
                 )
             }
         }

@@ -7,4 +7,5 @@ sealed class Screen(val route: String, val title: String) {
     object BlockingTrap : Screen("blocking_trap", "The Blocking Trap")
     object CallbackBridge : Screen("callback_bridge", "Callback Bridge")
     object ParallelApi : Screen("parallel_api", "Parallel Strategies")
+    object Backpressure : Screen("backpressure", "Backpressure & Buffering")
 }

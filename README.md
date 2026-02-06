@@ -271,6 +271,35 @@ to a single `collect` block concurrently.
 
 ---
 
+## 🌊 Module 6: Backpressure & Buffering
+
+This module visualizes how Kotlin Flows handle "Fast Producers" and "Slow Consumers." In reactive
+programming, this mismatch is known as **Backpressure**.
+
+### Strategies Compared
+
+| Operator               | Behavior                                              | Best Use Case                                                                         |
+|:-----------------------|:------------------------------------------------------|:--------------------------------------------------------------------------------------|
+| **Default**            | Producer waits for Consumer.                          | When every single value is critical and order matters.                                |
+| **`.buffer()`**        | Producer runs ahead; values are queued.               | When the producer is expensive to keep open (e.g., a socket).                         |
+| **`.collectLatest()`** | Cancels old processing when new data arrives.         | **Search/Filtering:** Don't finish an old search if the user typed a new letter.      |
+| **`.conflate()`**      | Skips intermediate values; only processes the latest. | **Stock Tickers/Live Scores:** You only care about the most recent price.             |
+| **`.debounce()`**      | Waiting for someone to stop talking before replying.  | **Search Bars:** Prevent API calls on every single keystroke.                         |
+| **`.sample()`**        | Taking a photo every 5 seconds.                       | **Progress Bars/Analytics:** Showing updates at a fixed interval to save battery/CPU. |
+| **`.collectLatest()`** | Interrupting someone because you have a newer topic.  | **UI Navigation:** Stop loading the old screen if the user clicks a new one.          |
+
+### 🔬 The "Search Bar" Test
+
+Try the **Debounce** button. Notice that even though the Emitter sends 20 values, the Consumer only
+receives the **last one**. This is because the emitter is so fast (100ms) that it never hits the
+300ms "quiet period" required by debounce until the very end.
+
+### The Senior Insight
+
+Backpressure isn't just about performance; it's about **Resource Management**. Using `collectLatest`
+on the Main thread can prevent "UI jank" by ensuring the app isn't trying to render 100 frames that
+are already outdated.
+
 ## ⚙️ Getting Started
 1. **Clone** this repository to your local machine.
 2. Open in **Android Studio** (Latest Version).
